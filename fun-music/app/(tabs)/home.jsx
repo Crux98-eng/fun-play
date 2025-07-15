@@ -1,11 +1,31 @@
 import { StyleSheet, Text, View ,Dimensions,Image,SafeAreaView, TouchableOpacity} from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {Colors} from '../../constants/Colors'
 const {width,height}= Dimensions.get("window");
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; 
 
 import Slider from '@react-native-community/slider';
+import MusicFiles from 'react-native-get-music-files'
+import { Audio } from 'expo-av';
 const Home = () => {
+const [tracks, setTracks]=useState([]);
+useEffect(()=>{
+MusicFiles.getAll({
+blured:false,
+artist:true,
+duration:true,
+cover:true,
+genre:true,
+title:true,
+}).then(songs=>{
+  setTracks(songs);
+})
+console.log(tracks);
+
+},[])
+
+
+
   return (
     <SafeAreaView style={styles.mainContainer} >
       <View style={styles.topCard}>
@@ -49,7 +69,17 @@ const Home = () => {
 
           </View>
       </View>
-      
+      <View style={styles.bottomContainer}>
+        <TouchableOpacity>
+          <MaterialIcons  name='menu' size={30} />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <MaterialIcons  name='favorite-border' size={30} />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <MaterialIcons  name='share' size={30} />
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   )
 }
@@ -102,4 +132,17 @@ songDetails:{
   height:50,
   paddingTop:10,
 },
-})
+bottomContainer: {
+  width: width * 0.9,
+  height: 100,
+  borderTopColor: Colors.secondary,
+  borderTopWidth: 1, 
+  marginTop: 70,
+  display:'flex',
+  flexDirection:'row',
+  justifyContent:'space-between',
+  alignItems:'center'
+ 
+},
+
+})  
