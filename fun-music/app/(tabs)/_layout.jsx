@@ -5,9 +5,11 @@ const TabsLayout=()=> {
   
 
   return (
+    
       <Stack>
-        <Stack.Screen name="home" options={{ headerShown: false }} />
+        <Stack.Screen name="home" options={{ headerShown: true }} />
       </Stack>
   );
 }
+
 export default TabsLayout
