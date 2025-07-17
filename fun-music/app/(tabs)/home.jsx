@@ -68,9 +68,11 @@ const Home = () => {
   // Load and play selected audio file
   const loadAudio = async (audio) => {
     try {
+
       await playbackObj.unloadAsync();
       await playbackObj.loadAsync({ uri: audio.uri }, { shouldPlay: true });
       playbackObj.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
+      
     } catch (error) {
       Alert.alert("Playback Error", "Something went wrong loading this track.");
       console.error("loadAudio error:", error);
