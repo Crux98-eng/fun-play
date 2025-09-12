@@ -1,44 +1,68 @@
 {
   "expo": {
     "name": "fun-music",
-    "slug": "fun-music",
+    "slug": "musicplay",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./icon.png",
     "scheme": "funmusic",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/splash-icon.png",
+      "image": "./icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffffff",
+      "permissions": [
+        "RECORD_AUDIO",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "This app needs access to your microphone to record audio.",
+        "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to save audio files."
+      },
+      "runtimeVersion": {
+        "policy": "appVersion"
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./icon.png",
+        "backgroundColor": "#f0c129"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.ericcoder.funmusic"
+      "package": "com.ericcoder.funmusic",
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ],
+      "runtimeVersion": "1.0.0"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./icon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-audio"
     ],
     "experiments": {
       "typedRoutes": true
     },
     "extra": {
       "eas": {
-        "projectId": "a5d12b63-779b-4eb1-b879-05f5c55d987a"
+        "projectId": "496bd5d2-4449-4cd3-8e7b-7030f94fbbab"
       }
+    },
+    "owner": "eric-coder",
+    "updates": {
+      "url": "https://u.expo.dev/496bd5d2-4449-4cd3-8e7b-7030f94fbbab"
     }
   }
 }

@@ -41,7 +41,8 @@ const TabsLayout = () => {
 
       try {
         await AsyncStorage.setItem('coverImage', imageUri); // Save to AsyncStorage
-        console.log('Image URI saved to storage:', imageUri);
+       router.push('/');
+
       } catch (error) {
         console.error('Error saving image URI:', error);
       }
@@ -80,9 +81,15 @@ const TabsLayout = () => {
             {selectedImage && (
               <Image source={{ uri: selectedImage }} style={styles.previewImage} />
             )}
+            <TouchableOpacity  style={styles.chooseImageBtn} onPress={()=>handleSelectImage()}>
+              <Text style={{color:'white',fontSize:18}}>Choose from Gallery</Text>
+            </TouchableOpacity>
+            <TouchableOpacity  style={styles.close} onPress={()=>handleCloseModal()}>
+              <Text style={{color:'red',fontSize:18}}>Cancel</Text>
+            </TouchableOpacity>
 
-            <Button title="Choose from Gallery" onPress={handleSelectImage} />
-            <Button style={styles.btnClose} title="Close" onPress={handleCloseModal} color="red" />
+          
+            
           </View>
         </View>
       </Modal>
@@ -111,7 +118,7 @@ const styles = StyleSheet.create({
   modalContainer: {
     width: 300,
     padding: 20,
-    backgroundColor: 'white',
+    backgroundColor:Colors.primary,
     borderRadius: 10,
     alignItems: 'center',
      minWidth: '80%',
@@ -124,5 +131,19 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderRadius: 8,
   },
- 
+  chooseImageBtn:{
+  backgroundColor:Colors.secondary,
+  paddingHorizontal:50,
+  paddingVertical:20,
+  borderRadius:10,
+
+  },
+ close:{
+  borderColor:'red',
+  borderWidth:2,
+  paddingHorizontal:100,
+  paddingVertical:10,
+  borderRadius:8,
+  marginTop:30,
+ },
 });

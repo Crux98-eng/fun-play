@@ -21,10 +21,10 @@ const Index = () => {
           top: height * .7,
           color: '#fff',
           fontSize: 24,
-          fontWeight: 300,
+          fontWeight: '300',
         }}>lets vibe the music together</Text>
         <TouchableOpacity onPress={()=>router.push('/home')}  style={styles.btn}>
-          <Text style={{ color: '#fff', fontSize: 24, fontWeight: 600 }}>Start</Text>
+          <Text style={{ color: '#fff', fontSize: 24, fontWeight: '600' }}>Start</Text>
         </TouchableOpacity>
       </View>
 
