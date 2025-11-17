@@ -49,9 +49,12 @@
       "favicon": "./icon.png"
     },
     "plugins": [
-      "expo-router",
-      "expo-audio"
-    ],
+  ["expo-video", { "supportsBackgroundPlayback": true, "supportsPictureInPicture": true }],
+  "expo-router",
+  "expo-audio",
+  "expo-font",
+  "expo-web-browser"
+],
     "experiments": {
       "typedRoutes": true
     },

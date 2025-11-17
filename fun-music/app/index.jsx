@@ -3,7 +3,7 @@ import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Colors } from '../constants/Colors'
 import {router} from 'expo-router'
-
+import { ModalPortal } from 'react-native-modals';
 const { width, height } = Dimensions.get("window");
 const Index = () => {
   return (
@@ -26,6 +26,7 @@ const Index = () => {
         <TouchableOpacity onPress={()=>router.push('/home')}  style={styles.btn}>
           <Text style={{ color: '#fff', fontSize: 24, fontWeight: '600' }}>Start</Text>
         </TouchableOpacity>
+        <ModalPortal />
       </View>
 
 

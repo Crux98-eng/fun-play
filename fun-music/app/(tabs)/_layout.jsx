@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { router, Stack } from 'expo-router';
+import { router, Stack, Tabs } from 'expo-router';
 import { 
   View, 
   TouchableOpacity, 
@@ -51,16 +51,29 @@ const TabsLayout = () => {
     }
   };
 
+  const TabsIcon = ({name , color, focused }) => (
+    <View>
+    <MaterialIcons name={name}  color={focused?color :'gray'} size={30}/>
+    </View>
+  );
+
   return (
     <>
-      <Stack>
-        <Stack.Screen
+      <Tabs>
+        <Tabs.Screen
           name="home"
           options={{
             headerShown: true,
             title: 'Fun Music',
             headerStyle: { backgroundColor: Colors.secondary },
             headerTintColor: 'white',
+           tabBarIcon: ({ focused, color }) => (
+              <TabsIcon
+                name={"home"}
+                color={Colors.secondary}
+                focused={focused}
+              />
+            ),
             headerRight: () => (
               <View style={styles.settings}>
                 <TouchableOpacity onPress={handleOpenModal}>
@@ -70,7 +83,30 @@ const TabsLayout = () => {
             ),
           }}
         />
-      </Stack>
+        <Tabs.Screen
+          name="onlineMusic"
+          options={{
+            headerShown: true,
+            title: 'online Music',
+            headerStyle: { backgroundColor: Colors.secondary },
+            headerTintColor: 'white',
+           tabBarIcon: ({ focused, color }) => (
+              <TabsIcon
+                name={"cloud-done"}
+                color={Colors.secondary}
+                focused={focused}
+              />
+            ),
+            headerRight: () => (
+              <View style={styles.settings}>
+                <TouchableOpacity onPress={handleOpenModal}>
+                  <MaterialIcons name="settings-suggest" size={24} color="white" />
+                </TouchableOpacity>
+              </View>
+            ),
+          }}
+        />
+      </Tabs>
 
       {/* Modal for image selection */}
       <Modal visible={isOpen} animationType="slide" transparent={true}>
