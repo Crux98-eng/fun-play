@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect ,useRef} from 'react';
 import {
   View,
   Text,
@@ -16,6 +16,7 @@ import videobg from '../../assets/videos/videobg.mp4';
 import MusicCard from '../../components/musicCard';
 import FailedMusicLoad from '../../components/failed_to_load_music';
 import { router } from 'expo-router';
+import NowPlayingModal from '../../components/NowPlayingModal';
 const { width, height } = Dimensions.get('window');
 
 //const BASE_URL = 'http://192.168.8.104:5000/api/tracks';
@@ -26,7 +27,8 @@ export default function OnlineMusic() {
   const [currentSound, setCurrentSound] = useState(null);
   const [playingTrack, setPlayingTrack] = useState(null);
 
-
+  const modalRef = useRef(null);
+  const openModal = () => modalRef.current?.open()
   // FETCH MUSIC (Fully debugged)
 
 
@@ -34,7 +36,7 @@ export default function OnlineMusic() {
   const fetchMusic = async () => {
 
     try {
-      const response = await fetch('http://192.168.8.104:5000/api/tracks');
+      const response = await fetch('http://192.168.8.102:5000/api/tracks');
 
       // If response is not JSON → print raw text
       const text = await response.text();
@@ -150,16 +152,18 @@ const navigateHome=()=>{
         <View style={styles.scrollable_content}>
           {tracks.map((item, index) => (
             
-           <MusicCard  key={index}
-           name={item.artist}
-           title={item.title}
-           song={item.url}
-           
-           />
+           <MusicCard
+            key={index}
+            {...item}
+            index={index}
+            playlist={tracks}
+            openModal={openModal}
+            />
           ))}
           
         </View>
       </ScrollView>
+      <NowPlayingModal ref={modalRef} />
     </SafeAreaView>
   );
 }

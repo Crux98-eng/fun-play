@@ -1,69 +1,37 @@
-
 // import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
-// import React, { useEffect, useRef, useState } from 'react';
-// import { Audio } from 'expo-audio';
+// import React from 'react';
+// import { useAudioPlayer } from 'expo-audio';
 // import MaterialIcons from '@react-native-vector-icons/material-icons';
 // import { Colors } from '../constants/Colors';
 
 // const { width } = Dimensions.get('window');
 
 // const MusicCard = ({ name, title, song }) => {
-//   const playerRef = useRef(null);
-//   const [isPlaying, setIsPlaying] = useState(false);
 
-//   //console.log("song prop => ", song);
-
-//   // Load audio once
-//   const loadAudio = async () => {
-//     if (playerRef.current) return; // Already loaded
-
-//     const player = new Audio.Sound();
-//     await player.loadAsync({ uri: song });
-//     playerRef.current = player;
-//   };
-  
-
-//   const togglePlay = async () => {
-//     await loadAudio();
-
-//     if (!isPlaying) {
-//       await playerRef.current.playAsync();
-//       setIsPlaying(true);
-//     } else {
-//       await playerRef.current.pauseAsync();
-//       setIsPlaying(false);
-//     }
-//   };
-
-//   // Cleanup on unmount
-//   useEffect(() => {
-//     return () => {
-//       if (playerRef.current) {
-//         playerRef.current.unloadAsync();
-//       }
-//     };
-//   }, []);
+//   const player = useAudioPlayer(song);
 
 //   return (
 //     <View style={styles.container}>
 
-//       {/* Left Icon */}
 //       <View style={styles.icon}>
 //         <MaterialIcons name="headset" size={30} color="#474747ff" />
 //       </View>
 
-//       {/* Title + Artist */}
 //       <View style={styles.details}>
 //         <Text style={{ color: '#fff' }}>{name || 'loading...'}</Text>
 //         <Text style={{ color: '#fff' }}>{title || 'loading...'}</Text>
 //       </View>
 
-//       {/* Play Button at the END */}
-//       <TouchableOpacity style={styles.playbtn} onPress={togglePlay}>
+//       <TouchableOpacity
+//         style={styles.playbtn}
+//         onPress={() => {
+//           player.playing ? player.pause() : player.play();
+//         }}
+//       >
 //         <MaterialIcons
-//           name={isPlaying ? 'pause-circle-filled' : 'play-circle-filled'}
+//           name={player.playing ? 'pause-circle-outline' : 'play-circle-filled'}
 //           size={36}
-//           color={Colors.primary}
+//           color={player.playing? 'green' :Colors.primary}
 //         />
 //       </TouchableOpacity>
 
@@ -83,7 +51,6 @@
 //     borderRadius: 10,
 //     marginBottom: 10,
 //   },
-
 //   icon: {
 //     width: 40,
 //     height: 40,
@@ -92,31 +59,31 @@
 //     alignItems: 'center',
 //     borderRadius: 20,
 //   },
-
 //   details: {
 //     marginLeft: 10,
-//     flex: 1,     // pushes play button to the end
+//     flex: 1,
 //   },
-
 //   playbtn: {
 //     marginRight: 10,
 //   },
 // });
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+
+// MusicCard.js
 import React from 'react';
-import { useAudioPlayer } from 'expo-audio';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import MaterialIcons from '@react-native-vector-icons/material-icons';
 import { Colors } from '../constants/Colors';
+import { usePlayer } from '../app/utils/PlayerContext';
 
 const { width } = Dimensions.get('window');
 
-const MusicCard = ({ name, title, song }) => {
+const MusicCard = ({ name, title, song, index, playlist, openModal }) => {
+  const { playSong, currentTrack, player } = usePlayer();
 
-  const player = useAudioPlayer(song);
+  const isThisPlaying = currentTrack?.song === song && player?.playing;
 
   return (
     <View style={styles.container}>
-
       <View style={styles.icon}>
         <MaterialIcons name="headset" size={30} color="#474747ff" />
       </View>
@@ -128,17 +95,17 @@ const MusicCard = ({ name, title, song }) => {
 
       <TouchableOpacity
         style={styles.playbtn}
-        onPress={() => {
-          player.playing ? player.pause() : player.play();
+        onPress={async () => {
+          await playSong({ name, title, song }, index, playlist);
+          openModal?.();
         }}
       >
         <MaterialIcons
-          name={player.playing ? 'pause-circle-outline' : 'play-circle-filled'}
+          name={isThisPlaying ? 'pause-circle-outline' : 'play-circle-filled'}
           size={36}
-          color={Colors.primary}
+          color={isThisPlaying ? 'green' : Colors.primary}
         />
       </TouchableOpacity>
-
     </View>
   );
 };
@@ -171,4 +138,3 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
 });
-

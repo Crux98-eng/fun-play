@@ -306,12 +306,12 @@ const Home = () => {
 
        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       {/* AI Modal Trigger */}
-      <TouchableOpacity onPress={() => setIsModalVisible(true)}>
+      {/* <TouchableOpacity onPress={() => setIsModalVisible(true)}>
         <MaterialIcons name="smart-toy" size={50} color={Colors.btn_pink} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       {/* Modal */}
-      <Modal
+      {/* <Modal
         visible={isModalVisible}
         onTouchOutside={() => setIsModalVisible(false)}
         modalStyle={{ padding: 20, borderRadius: 10 }}
@@ -322,7 +322,7 @@ const Home = () => {
             <Text style={{ marginTop: 10, color: 'blue' }}>Close</Text>
           </TouchableOpacity>
         </ModalContent>
-      </Modal>
+      </Modal> */}
     </View>
     </SafeAreaView>
   );
