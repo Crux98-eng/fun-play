@@ -75,7 +75,7 @@ const Home = () => {
     loadImage();
   }, []);
 
-  // 🔹 Load audio when track changes
+  //  Load audio when track changes
   useEffect(() => {
     if (currentIndex !== null && audioFiles[currentIndex]) {
       loadAudio(audioFiles[currentIndex]);
