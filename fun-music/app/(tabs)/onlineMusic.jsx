@@ -22,7 +22,8 @@ const { width, height } = Dimensions.get('window');
 
 
 // LOCAL or LAN
-const BASE_URL = 'http://192.168.177.150:5000/api/tracks';
+
+const BASE_URL = 'http://192.168.8.104:5000/api/tracks';
 
 export default function OnlineMusic() {
   const { currentTrack, isPlaying } = usePlayer();
@@ -59,6 +60,7 @@ export default function OnlineMusic() {
   const player = useVideoPlayer(videobg, (p) => {
     p.loop = true;
     p.play();
+    p.showNowPlayingNotification = false;
   });
 
   // Cleanup BG video
@@ -68,9 +70,11 @@ export default function OnlineMusic() {
       player?.unload?.();
     };
   }, []);
-  // playback is handled by PlayerContext
+ 
+  
 
-  // --------------------------------------------------
+  
+  
   // NAVIGATION
   // --------------------------------------------------
   const navigateHome = () => router.push('/home');
@@ -108,7 +112,7 @@ export default function OnlineMusic() {
       <VideoView
         style={styles.video}
         player={player}
-        allowsFullscreen
+        
         allowsPictureInPicture
       />
 

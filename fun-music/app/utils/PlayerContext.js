@@ -6,6 +6,8 @@ const PlayerContext = createContext();
 
 export const PlayerProvider = ({ children }) => {
   const soundRef = useRef(null);
+  // external players (e.g., local players in other screens/components) can register here
+  const externalPlayersRef = useRef({});
   const [playlist, setPlaylist] = useState([]);
   const [index, setIndex] = useState(-1);
   const [currentTrack, setCurrentTrack] = useState(null);
@@ -20,6 +22,17 @@ export const PlayerProvider = ({ children }) => {
     if (!uri) return console.warn('playSong: track has no uri', track);
 
     if (list.length) setPlaylist(list);
+
+    // request any external players to stop before playing within this context
+    try {
+      const externals = externalPlayersRef.current || {};
+      Object.values(externals).forEach((c) => {
+        try {
+          c.pause?.();
+          c.stop?.();
+        } catch (e) {}
+      });
+    } catch (e) {}
 
     // If same track currently loaded, toggle play/pause
     if (currentTrack && _getUri(currentTrack) === uri && soundRef.current) {
@@ -69,6 +82,43 @@ export const PlayerProvider = ({ children }) => {
     } catch (e) {
       console.error('playSong error', e);
     }
+  };
+
+  const registerExternalPlayer = (id, controls) => {
+    if (!id) return;
+    externalPlayersRef.current = externalPlayersRef.current || {};
+    externalPlayersRef.current[id] = controls;
+  };
+
+  const unregisterExternalPlayer = (id) => {
+    if (!id) return;
+    if (!externalPlayersRef.current) return;
+    delete externalPlayersRef.current[id];
+  };
+
+  const stopExternalPlayers = () => {
+    try {
+      const externals = externalPlayersRef.current || {};
+      Object.values(externals).forEach((c) => {
+        try {
+          c.pause?.();
+          c.stop?.();
+        } catch (e) {}
+      });
+    } catch (e) {}
+  };
+
+  const stopInternalPlayer = async () => {
+    try {
+      if (soundRef.current) {
+        try { await soundRef.current.stopAsync(); } catch (e) {}
+        try { await soundRef.current.unloadAsync(); } catch (e) {}
+        soundRef.current = null;
+      }
+    } catch (e) {}
+    setIsPlaying(false);
+    setCurrentTrack(null);
+    setIndex(-1);
   };
 
   const _playNextAfterFinish = async () => {
@@ -132,6 +182,10 @@ export const PlayerProvider = ({ children }) => {
         playlist,
         index,
         isPlaying,
+        registerExternalPlayer,
+        unregisterExternalPlayer,
+        stopExternalPlayers,
+        stopInternalPlayer,
       }}
     >
       {children}

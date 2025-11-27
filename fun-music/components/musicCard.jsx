@@ -4,23 +4,39 @@ import { View, Text, StyleSheet, Dimensions, TouchableOpacity, ScrollView, Modal
 import MaterialIcons from '@react-native-vector-icons/material-icons';
 import { Colors } from '../constants/Colors';
 import { createAudioPlayer } from 'expo-audio';
+import { usePlayer } from '../app/utils/PlayerContext';
 const { width, height } = Dimensions.get('window');
-import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
 const MusicCard = ({ songs }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [isPlaying, setIsPlaying] = useState(false);
   const playerRef = useRef(null);
+  const playerIdRef = useRef(`local-player-${Math.random().toString(36).slice(2,9)}`);
+  const { registerExternalPlayer, unregisterExternalPlayer, stopInternalPlayer } = usePlayer();
 
   // initialize player once
   useEffect(() => {
     playerRef.current = createAudioPlayer(null);
+    // register with global PlayerContext so that when the global player starts,
+    // this local player can be asked to stop.
+    const id = playerIdRef.current;
+    try {
+      registerExternalPlayer(id, {
+        pause: async () => {
+          try { await playerRef.current?.pause?.(); } catch (e) {}
+        },
+        stop: async () => {
+          try { await playerRef.current?.pause?.(); } catch (e) {}
+        },
+      });
+    } catch (e) {}
     return () => {
       try {
         playerRef.current?.pause?.();
         playerRef.current?.remove?.();
         playerRef.current = null;
       } catch (e) {}
+      try { unregisterExternalPlayer(playerIdRef.current); } catch (e) {}
     };
   }, []);
 
@@ -34,6 +50,8 @@ const MusicCard = ({ songs }) => {
     if (!uri) return console.warn('No audio URI for track', track);
 
     try {
+      // ask global player (PlayerContext) to stop first
+      try { await stopInternalPlayer(); } catch (e) {}
       // stop previous
       if (playerRef.current?.playing) {
         try { await playerRef.current.pause(); } catch (e) {}
