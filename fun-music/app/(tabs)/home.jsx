@@ -11,7 +11,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Modalize } from 'react-native-modalize';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from '../../constants/Colors';
-import { Modal, ModalContent } from 'react-native-modals';
 const { width } = Dimensions.get('window');
 const DEFAULT_IMAGE = require('../../assets/images/m3.jpg');
 

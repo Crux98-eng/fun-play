@@ -32,6 +32,7 @@
       "adaptiveIcon": {
         "foregroundImage": "./icon.png",
         "backgroundColor": "#f0c129"
+        
       },
       "edgeToEdgeEnabled": true,
       "package": "com.ericcoder.funmusic",
@@ -39,7 +40,9 @@
         "android.permission.RECORD_AUDIO",
         "android.permission.MODIFY_AUDIO_SETTINGS",
         "android.permission.RECORD_AUDIO",
-        "android.permission.MODIFY_AUDIO_SETTINGS"
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.FOREGROUND_SERVICE"
+        
       ],
       "runtimeVersion": "1.0.0"
     },
